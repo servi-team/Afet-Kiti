@@ -99,7 +99,7 @@
         tools:node="remove" />
 
     <application
-        android:name=".main.TrailSenseApplication"
+        android:name="com.kylecorry.trail_sense.main.AfetKitiApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/backup_rules_31_higher"
         android:enableOnBackInvokedCallback="true"
