@@ -35,6 +35,11 @@ import com.kylecorry.trail_sense.tools.tools.ui.sort.AlphabeticalToolSort
 import com.kylecorry.trail_sense.tools.tools.ui.sort.CategorizedTools
 import com.kylecorry.trail_sense.tools.tools.ui.sort.ToolSortFactory
 import com.kylecorry.trail_sense.tools.tools.ui.sort.ToolSortType
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
+import infrastructure.earthquake_service
+import android.util.Log
+
 
 class ToolsFragment : BoundFragment<FragmentToolsBinding>() {
 
@@ -363,5 +368,22 @@ class ToolsFragment : BoundFragment<FragmentToolsBinding>() {
             successCallback.intentSender
         )
     }
+}
+private val earthquakeService: earthquake_service by lazy {
+    retrofit2.Retrofit.Builder()
+        .baseUrl("https://api.orhanaydogdu.com.tr/deprem/")
+        .addConverterFactory(retrofit2.converter.gson.GsonConverterFactory.create())
+        .build()
+        .create(earthquake_service::class.java)
+}
+private fun fetchEarthquakes() {
+    // Veri çekme fonksiyonu
+}
+override fun onViewCreated(view: android.view.View, savedInstanceState: android.os.Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
 
+    binding.earthquakeButton.setOnClickListener {
+        fetchEarthquakes()
+        android.widget.Toast.makeText(requireContext(), "Son depremler yükleniyor...", android.widget.Toast.LENGTH_SHORT).show()
+    }
 }
