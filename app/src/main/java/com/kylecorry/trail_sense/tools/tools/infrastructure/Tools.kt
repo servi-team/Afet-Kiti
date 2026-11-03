@@ -28,6 +28,7 @@ import com.kylecorry.trail_sense.tools.clouds.CloudsToolRegistration
 import com.kylecorry.trail_sense.tools.comms.messaging.LocalMessagingToolRegistration
 import com.kylecorry.trail_sense.tools.comms.talk.LocalTalkToolRegistration
 import com.kylecorry.trail_sense.tools.convert.ConvertToolRegistration
+import com.kylecorry.trail_sense.tools.counter.CounterToolRegistration
 import com.kylecorry.trail_sense.tools.declination.DeclinationToolRegistration
 import com.kylecorry.trail_sense.tools.diagnostics.DiagnosticsToolRegistration
 import com.kylecorry.trail_sense.tools.emergency_call.EmergencyCallToolRegistration
@@ -117,7 +118,8 @@ object Tools {
         DeclinationToolRegistration,
         MapToolRegistration,
         MagnifierToolRegistration,
-        EmergencyCallToolRegistration
+        EmergencyCallToolRegistration,
+        CounterToolRegistration
     )
     private val bus = EventBus<Bundle>()
 
@@ -295,6 +297,8 @@ object Tools {
     const val MAP = 47L
     const val MAGNIFIER = 48L
     const val EMERGENCY_CALL = 49L
+
+    const val COUNTER = 50L
 
     // Quick Action IDs
     const val QUICK_ACTION_NONE = -1

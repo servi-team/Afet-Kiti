@@ -1526,4 +1526,20 @@
     <string name="emergency_sms_no_contacts">Kayıtlı acil durum kişisi bulunamadı. Lütfen ayarlardan kişi ekleyin.</string>
     <string name="emergency_location_unavailable">Konum bilgisi alınamadı</string>
     <string name="emergency_custom_number_dialog_title">Acil Numara Girin</string>
+    <string name="tool_counter_title">Sayaç</string>
+    <string name="counter_empty_title">Henüz sayaç yok</string>
+    <string name="counter_empty_hint">Afet çantandaki malzemeleri ekle, kaç tane olduğunu takip et.</string>
+    <string name="counter_suggestions_title">Afet çantası önerileri</string>
+    <string name="counter_new_title">Yeni sayaç</string>
+    <string name="counter_name_hint">Örn. El feneri</string>
+    <string name="counter_suggestion_water">Su (litre)</string>
+    <string name="counter_suggestion_canned_food">Konserve</string>
+    <string name="counter_suggestion_flashlight">El feneri</string>
+    <string name="counter_suggestion_batteries">Pil</string>
+    <string name="counter_suggestion_radio">Pilli radyo</string>
+    <string name="counter_suggestion_first_aid">İlk yardım malzemesi</string>
+    <string name="counter_suggestion_medicine">İlaç</string>
+    <string name="counter_suggestion_blanket">Battaniye</string>
+    <string name="counter_suggestion_mask">Maske</string>
+    <string name="counter_suggestion_wet_wipes">Islak mendil</string>
 </resources>
