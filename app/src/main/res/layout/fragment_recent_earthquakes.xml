@@ -14,6 +14,33 @@
         app:showSubtitle="true"
         app:title="@string/tool_recent_earthquakes_title" />
 
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/earthquakes_view_toggle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="4dp"
+        app:checkedButton="@id/earthquakes_view_list"
+        app:selectionRequired="true"
+        app:singleSelection="true">
+
+        <Button
+            android:id="@+id/earthquakes_view_list"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/earthquakes_view_list" />
+
+        <Button
+            android:id="@+id/earthquakes_view_map"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/earthquakes_view_map" />
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/earthquakes_filters"
         android:layout_width="match_parent"
@@ -61,6 +88,30 @@
             android:paddingBottom="8dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_earthquake" />
+
+        <!--The MapLibre view is created only when the map is first opened-->
+        <FrameLayout
+            android:id="@+id/earthquakes_map_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <FrameLayout
+                android:id="@+id/earthquakes_map_holder"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <include
+                android:id="@+id/earthquakes_map_card"
+                layout="@layout/item_earthquake"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="@dimen/earthquakes_map_card_bottom_margin"
+                android:visibility="gone"
+                tools:visibility="visible" />
+        </FrameLayout>
 
         <ProgressBar
             android:id="@+id/earthquakes_loading"

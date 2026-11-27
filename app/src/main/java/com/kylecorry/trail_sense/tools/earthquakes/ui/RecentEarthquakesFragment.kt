@@ -39,6 +39,10 @@ class RecentEarthquakesFragment : BoundFragment<FragmentRecentEarthquakesBinding
     private var minMagnitude = EarthquakePreferences.DEFAULT_MIN_MAGNITUDE
     private var sort = EarthquakeSort.Time
 
+    private var showMap = false
+    private var hasContent = false
+    private var mapController: EarthquakeMapController? = null
+
     private var earthquakes = emptyList<Earthquake>()
     private var loadJob: Job? = null
 
@@ -50,6 +54,7 @@ class RecentEarthquakesFragment : BoundFragment<FragmentRecentEarthquakesBinding
         timeRange = prefs.timeRange
         minMagnitude = prefs.minMagnitude.takeIf { it in MIN_MAGNITUDES } ?: MIN_MAGNITUDES.first()
         sort = prefs.sort
+        showMap = prefs.showMap
 
         binding.earthquakesList.adapter = adapter
         binding.earthquakesTitle.subtitle.text = ""
@@ -58,8 +63,26 @@ class RecentEarthquakesFragment : BoundFragment<FragmentRecentEarthquakesBinding
         binding.earthquakesTimeRange.setOnClickListener { pickTimeRange() }
         binding.earthquakesMinMagnitude.setOnClickListener { pickMinMagnitude() }
         binding.earthquakesSort.setOnClickListener { pickSort() }
+        binding.earthquakesViewToggle.check(
+            if (showMap) R.id.earthquakes_view_map else R.id.earthquakes_view_list
+        )
+        binding.earthquakesViewToggle.addOnButtonCheckedListener { _, checkedId, isChecked ->
+            if (isChecked) {
+                setShowMap(checkedId == R.id.earthquakes_view_map)
+            }
+        }
+        if (showMap) {
+            createMapIfNeeded()
+        }
         updateFilterLabels()
+        updateContentVisibility()
         load()
+    }
+
+    override fun onDestroyView() {
+        // The map view itself is destroyed by its view lifecycle observer
+        mapController = null
+        super.onDestroyView()
     }
 
     private fun load() {
@@ -84,8 +107,9 @@ class RecentEarthquakesFragment : BoundFragment<FragmentRecentEarthquakesBinding
     private fun showLoading() {
         binding.earthquakesLoading.isVisible = true
         binding.earthquakesMessageView.isVisible = false
-        binding.earthquakesList.isVisible = false
         binding.earthquakesTitle.rightButton.isEnabled = false
+        hasContent = false
+        updateContentVisibility()
     }
 
     private fun showEarthquakes(updatedAt: Instant) {
@@ -101,14 +125,18 @@ class RecentEarthquakesFragment : BoundFragment<FragmentRecentEarthquakesBinding
             return
         }
         binding.earthquakesMessageView.isVisible = false
-        binding.earthquakesList.isVisible = true
+        hasContent = true
+        updateContentVisibility()
         updateList(scrollToTop = true)
+        mapController?.setEarthquakes(earthquakes)
+        showSelectedEarthquake(null)
     }
 
     private fun showMessage(@StringRes message: Int, showRetry: Boolean) {
         binding.earthquakesLoading.isVisible = false
-        binding.earthquakesList.isVisible = false
         binding.earthquakesTitle.rightButton.isEnabled = true
+        hasContent = false
+        updateContentVisibility()
         binding.earthquakesMessageView.isVisible = true
         binding.earthquakesMessage.setText(message)
         binding.earthquakesRetryBtn.isVisible = showRetry
@@ -120,6 +148,51 @@ class RecentEarthquakesFragment : BoundFragment<FragmentRecentEarthquakesBinding
                 binding.earthquakesList.scrollToPosition(0)
             }
         }
+    }
+
+    private fun setShowMap(show: Boolean) {
+        if (show == showMap) {
+            return
+        }
+        showMap = show
+        prefs.showMap = show
+        if (show) {
+            createMapIfNeeded()
+        }
+        showSelectedEarthquake(null)
+        updateContentVisibility()
+    }
+
+    /**
+     * MapLibre is only started once the map is opened, so the list costs nothing extra.
+     */
+    private fun createMapIfNeeded() {
+        if (mapController != null) {
+            return
+        }
+        val controller = EarthquakeMapController(requireContext()) { showSelectedEarthquake(it) }
+        binding.earthquakesMapHolder.addView(controller.view)
+        viewLifecycleOwner.lifecycle.addObserver(controller)
+        controller.setEarthquakes(earthquakes)
+        mapController = controller
+    }
+
+    private fun updateContentVisibility() {
+        binding.earthquakesList.isVisible = hasContent && !showMap
+        binding.earthquakesMapContainer.isVisible = hasContent && showMap
+        // Sorting only changes the order of the list
+        binding.earthquakesSort.isVisible = !showMap
+    }
+
+    private fun showSelectedEarthquake(earthquake: Earthquake?) {
+        val card = binding.earthquakesMapCard
+        if (earthquake == null) {
+            card.root.isVisible = false
+            return
+        }
+        EarthquakeItemBinder.bind(card, earthquake)
+        card.root.setOnClickListener { openInMaps(earthquake) }
+        card.root.isVisible = true
     }
 
     private fun updateFilterLabels() {

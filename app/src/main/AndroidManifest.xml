@@ -104,6 +104,10 @@
     <uses-permission
         android:name="android.permission.ACCESS_NETWORK_STATE"
         tools:node="remove" />
+    <!--Requested by MapLibre but not needed: the map is told it is always connected-->
+    <uses-permission
+        android:name="android.permission.ACCESS_WIFI_STATE"
+        tools:node="remove" />
 
     <application
         android:name=".main.AfetKitiApplication"

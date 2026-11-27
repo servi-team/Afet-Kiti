@@ -53,6 +53,11 @@ android {
         getByName("release") {
             isMinifyEnabled = true
             isShrinkResources = true
+            // MapLibre ships ~4.5 MB of native code per ABI. Real devices are ARM, so x86
+            // (emulator) libraries are left out of release APKs. Debug builds keep every ABI.
+            ndk {
+                abiFilters += listOf("arm64-v8a", "armeabi-v7a")
+            }
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -218,6 +223,9 @@ dependencies {
     // Mapsforge
     implementation(libs.mapsforge.map.android)
     implementation(libs.mapsforge.map.reader)
+
+    // MapLibre (Recent Earthquakes map, OpenFreeMap tiles)
+    implementation(libs.maplibre.android.sdk)
 
     // Linting
     detektPlugins(libs.orion)

@@ -2118,4 +2118,6 @@
     <string name="earthquakes_error_server">AFAD data could not be loaded. Please try again later.</string>
     <string name="earthquakes_retry">Try again</string>
     <string name="earthquakes_no_map_app">No map app found to show this location.</string>
+    <string name="earthquakes_view_list">List</string>
+    <string name="earthquakes_view_map">Map</string>
 </resources>

@@ -25,6 +25,13 @@ class EarthquakePreferences(context: Context) {
         get() = preferences.getFloat(KEY_MIN_MAGNITUDE) ?: DEFAULT_MIN_MAGNITUDE
         set(value) = preferences.putFloat(KEY_MIN_MAGNITUDE, value)
 
+    /**
+     * True if the map was the last view shown, false for the list.
+     */
+    var showMap: Boolean
+        get() = preferences.getBoolean(KEY_SHOW_MAP) ?: false
+        set(value) = preferences.putBoolean(KEY_SHOW_MAP, value)
+
     private inline fun <reified T : Enum<T>> enumOrDefault(name: String?, default: T): T {
         return enumValues<T>().firstOrNull { it.name == name } ?: default
     }
@@ -34,5 +41,6 @@ class EarthquakePreferences(context: Context) {
         private const val KEY_TIME_RANGE = "pref_earthquakes_time_range"
         private const val KEY_SORT = "pref_earthquakes_sort"
         private const val KEY_MIN_MAGNITUDE = "pref_earthquakes_min_magnitude"
+        private const val KEY_SHOW_MAP = "pref_earthquakes_show_map"
     }
 }

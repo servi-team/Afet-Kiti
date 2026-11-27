@@ -1562,4 +1562,6 @@
     <string name="earthquakes_error_server">AFAD verileri yüklenemedi. Lütfen daha sonra tekrar dene.</string>
     <string name="earthquakes_retry">Tekrar dene</string>
     <string name="earthquakes_no_map_app">Bu konumu gösterecek harita uygulaması bulunamadı.</string>
+    <string name="earthquakes_view_list">Liste</string>
+    <string name="earthquakes_view_map">Harita</string>
 </resources>

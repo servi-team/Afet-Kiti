@@ -7,4 +7,6 @@
     <dimen name="rounded_corner_size">12dp</dimen>
     <dimen name="chart_height">150dp</dimen>
     <dimen name="gesture_zone">32dp</dimen>
+    <!--Leaves the map logo and attribution button (bottom left) visible under the card-->
+    <dimen name="earthquakes_map_card_bottom_margin">48dp</dimen>
 </resources>
